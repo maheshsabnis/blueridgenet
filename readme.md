@@ -529,3 +529,73 @@
 			- dotnet ef database update -c  MyApplication.MyDbContext
 
 			- This will read migrations class and generate scripts for creating database and tables
+
+# Programming with ASP.NET Core 6 MVC
+1. Microsoft.AspNetCore.App
+	- ASP.NET COre Base Model
+		- Hoting Env
+			- Host Builder that configures the ASP.NET Core App on Hosting ENv whihc uses 'dotnet.exe' to execute the web app
+			- THe 'WebApplicationBuilder' class
+				- Create a Dependency Injection Container
+					- Services property of the type IServiceCollection
+				- REgister Middlewares
+		- Services
+			- The Arrangement of 'Dependency Injection' Container
+			- Uses IServiceCollection to register following dependencies in DI Container
+				- DbContext
+				- Identity
+					- Security
+						- Authentication
+						- AUthorization
+						- TOkens
+				- Sessions
+				- Cache
+				- Cross Origin Resource Sharing (CORS)
+				- Custom Third-Party Services
+				- Developres APplication Domain Services
+			- Dependency Object LIfetime Methods using the 'ServiceDescriptor' class
+				- Singleton, AddSingleton()
+					- Life for entire App Life
+				- Scopped, AddScopped()
+					- Life for a specific Session
+				- Transient, AddTransient()
+					- Life for specific Request
+		- Middlewares
+			- The Http request Pipeline
+			- Manages following
+				- Exceptions
+				- Https Redirection
+					- Http to Https
+				- ROuting
+				- CORS
+				- StaticFiles
+				- Authentication
+				- Authorization
+				- Custom Middlewares
+- MVC
+	- builder.Services.AddControllersWithViews()
+		- used to accept request for
+			- MVC COntrollers
+			- API Controllers
+	- Controller
+		- Accept Http Request and start processing it based on Http Request Types
+			- Http Request Types: GET, POST, PUT, and DELETE
+		- MVC Controller class has following
+			- Derived from 'Controller' abstract base class, which is further derived from 'ControllerBase' abstract class
+			- Action Methods
+				- Methods those are exeueted based on HTTP Request Type
+				- Each Action MEthod Returns type of 'IActionResult'
+					- IActionResult is implemted by following classes
+						- ViewResult, retunrns View
+						- FileResult, returns file
+						- PartielViewResut, returns a Partial view
+						- JsonResult, returns JSON
+			- DO not write any Business Login in Controller
+			- What MUST be written in COntrollr
+				- Vaidtion Check for ENtities
+				- Security Check
+				- Exception Filters (OR USe Middlewars)
+				- REdirect Across Controllers
+				- Managing State
+					- Session
+					- TempData
