@@ -11,9 +11,9 @@ namespace Core_MVC.Services
     {
         BlueCompanyContext ctx;
         ResponseObject<Employee> response;
-        public EmployeeService()
+        public EmployeeService(BlueCompanyContext ctx)
         {
-             
+             this.ctx = ctx;
             response = new ResponseObject<Employee>();
         }
 

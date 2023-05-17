@@ -11,9 +11,15 @@ namespace Core_MVC.Services
     {
         BlueCompanyContext ctx;
         ResponseObject<Department> response;
-        public DepartmentService()
+        /// <summary>
+        /// COnstructor Injection of Dependency
+        /// Provided this is register in DI Container
+        /// using builder.Services.AddDbContext<BlueCompanyContext>()
+        /// </summary>
+        /// <param name="ctx"></param>
+        public DepartmentService(BlueCompanyContext ctx)
         {
-             
+            this.ctx = ctx;              
             response = new ResponseObject<Department>();
         }
 

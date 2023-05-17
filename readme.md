@@ -599,3 +599,20 @@
 				- Managing State
 					- Session
 					- TempData
+# Views in MVC
+1. RazorPage<TModel> base class
+	- TModel, is the model class passed to View
+2. View USes following
+	- TagHelper
+		- an attribute applied to HTML element to set its behavior
+		- asp-action
+			- The HTTP GET Request to Action Method
+		- asp-controller
+			- The HTTP GET Request to Controller
+		- asp-items
+			- USed by HTML select element to show collection data in HTML select element 
+		- asp-for
+			- USed to bind the public property from Model class to HTML element
+			- WHen HTML element is updated, the corresponding Model property will be updated
+	- HtmlHelper
+		- The Custom HTML UI defined in ASP.NET MVC Views
