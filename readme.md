@@ -616,3 +616,55 @@
 			- WHen HTML element is updated, the corresponding Model property will be updated
 	- HtmlHelper
 		- The Custom HTML UI defined in ASP.NET MVC Views
+
+# Model Validations
+- The 'VaidationAttribute' an Abstract base class used for validating each Model-Binded property based on VAlidation Rules
+	- RequiredATtribute
+	- STringLengthAttribute
+	- CompareAttribute
+	- .....
+- This class has 'IsValid(object value)' returning 'boolean'
+	- The value is the value of the property being validated
+	- If the value is valid return true else false
+- If the Custom Data Annotation Validations are to be applied, then create a class derived from ValidationAttribute and override the IsValid() method
+
+- If Validations are Dependant based on Domain Logic then Data Annotations won't work, its is better to implement one of the following mechanism to implement such validations
+	- In COntroller class inside the action method write the conditional logic to validate
+		- To pass error message to View from the Actio Method use one of the following
+			- ViewData, Key/Value Pair
+			- ViewBag, the Dynamic Objet
+
+	- Use an exception handler to throw an exception and then retunr to error page
+		- USe try...catch block and then redirect to Error Page
+		- Create Exception Action FIlter
+			- Applied in MVC and API COntrollers, does not work in ASP.NET Core app with RAzor Pages
+		- CReate an Exception Middleware (Recomended)
+			- Works for ENtire ASP.NET Core Eco-System
+			- TO Navigate to an exception page it is recommended that, we should avoid hardcoding for route values, instead use the following
+				- RouteData property of ControllerBase class
+					- USe its 'Values' property, that represent ROute Exepression
+					- RouteData.Values["controller"] refer Program.cs
+					- RouteData.Values["action"] refer Program.cs
+# Sessions
+- USe the Session object for passing data across controllers, the data is live throught the Application till it is not chnaged
+	- The server-side state management
+	- The values will be stored on Host Server
+	- USe the AddSession Service as well as the AddInemoryCache service
+```` c#
+	builder.Services.AddInMemoryCache();
+	builder.Services.AddSession();
+````
+	- Add the Session Middleware	
+		- TO inform that the CUrrent HTTPRequest uses the Session State
+```` c#
+	- app.UseSession();
+````
+
+	- The HttpSession object, uses the ISession interface
+		- SetInt32(), GetInt32() methods
+		- SetString(), GetString()
+	- ISession interface has following 2 methods
+		- Set()
+			- Write Binary Data in Session
+		- TryGet()
+			- Try to read Binary Data from Session

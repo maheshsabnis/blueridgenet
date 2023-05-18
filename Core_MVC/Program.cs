@@ -15,6 +15,10 @@ builder.Services.AddDbContext<BlueCompanyContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"));
 });
 
+// INitialize Session and Caching
+builder.Services.AddSession();
+
+
 // REgister Department and EMployee Services
 builder.Services.AddScoped<IServices<Department,int>, DepartmentService>();
 builder.Services.AddScoped<IServices<Employee,int>, EmployeeService>();
@@ -34,7 +38,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession(); // Session Middleare
 app.UseRouting();
 
 app.UseAuthorization();

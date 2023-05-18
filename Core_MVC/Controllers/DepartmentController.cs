@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Core_MVC.Models;
 using Core_MVC.Services;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Core_MVC.Controllers
 {
@@ -48,11 +49,85 @@ namespace Core_MVC.Controllers
 
         [HttpPost]
         public IActionResult Create(Department dept)
-        { 
-            var result = deptServ.Create(dept);
-            // Redirect to an Index Action method
-            // that will show List of Departments
+        {
+            if (ModelState.IsValid)
+            {
+                // check if Dept exist based on DeptNAme
+                if (!CheckIdDepartmentNameExist(dept.DeptName))
+                {
+                    var result = deptServ.Create(dept);
+                    // Redirect to an Index Action method
+                    // that will show List of Departments
+                    return RedirectToAction("Index");
+                }
+                //  ViewBag.ErrorMessage = $"DeptName {dept.DeptName} is already exist";
+                ViewData["ErrorMessage"] = $"DeptName {dept.DeptName} is already exist";
+                return View(dept);
+                
+            }
+            // Stay on same page showing error messages
+            return View(dept);
+           
+        }
+
+
+        public IActionResult Edit(int id)
+        {
+            var response = deptServ.Get(id);
+            return View(response.Record);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id , Department dept) 
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (dept.DeptName.StartsWith(' '))
+                        throw new Exception("DeptName cannot starts from blanckspace");
+                    var response = deptServ.Update(id, dept);
+                    return RedirectToAction("Index");
+                }
+                // Stay on same page showing error messages
+                return View(dept);
+            }
+            catch (Exception ex)
+            {
+                return View("Error", new ErrorViewModel() 
+                {
+                    //ControllerName = "Department",
+                    //ActionName = "Edit",
+                    //ErrorMEssage = ex.Message
+
+                    ControllerName = RouteData.Values["controller"].ToString(),
+                    ActionName = RouteData.Values["action"].ToString(),
+                    ErrorMEssage = ex.Message
+                });
+            }
+        }
+
+        public IActionResult Delete(int id)
+        {
+            var response = deptServ.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        public IActionResult ShowEmployees(int id)
+        {
+            // Set the id i.e. DeptNo in session object 
+            this.HttpContext.Session.SetInt32("DeptNo", id);
+            // REdirect to an Index Vew of an EMployeeController
+            return RedirectToAction("Index", "Employee");
+        }
+
+
+        private bool CheckIdDepartmentNameExist(string dname)
+        { 
+            // Check for Department based on DeptName 
+            var dept = deptServ.Get().Records.Where(d=>d.DeptName.Trim() == dname.Trim()).FirstOrDefault();
+            if(dept != null) return true; // Exist
+            return false; // Not exist
         }
     }
 }
