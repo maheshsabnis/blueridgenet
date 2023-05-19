@@ -1,3 +1,4 @@
+using Core_MVC.CustomFilters;
 using Core_MVC.Models;
 using Core_MVC.Services;
 using Microsoft.EntityFrameworkCore;
@@ -23,8 +24,23 @@ builder.Services.AddSession();
 builder.Services.AddScoped<IServices<Department,int>, DepartmentService>();
 builder.Services.AddScoped<IServices<Employee,int>, EmployeeService>();
 
-
-builder.Services.AddControllersWithViews();
+// The Reqyuest will be accepetd for
+// MVC and API Controller
+// THis will load and initialize all dependencies for MVC and API COntrollers
+// ALl MVC Depednecies are defined in  'MvcOptions' class
+// e.g. ModelMetedata, Filters, etc
+builder.Services.AddControllersWithViews(options => 
+{ 
+    // Filter Registered at Global Levele
+    // THis will be applicable only for MVC and API Controllers
+    // If the same application uses Razor Pageg (In case of Identity)
+    // then Globally applied FIlters will crash, better apply them
+    // on COntrollers
+    options.Filters.Add(new LoggerFilterAttribute());
+    // register the exception filter
+    // AUto-REsolve the IMOdelMetadataProvider from MvcOptions 
+    options.Filters.Add(typeof(CustomExceptionFilter));
+});
 
 var app = builder.Build();
 

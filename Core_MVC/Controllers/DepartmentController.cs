@@ -2,6 +2,8 @@
 using Core_MVC.Models;
 using Core_MVC.Services;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Core_MVC.CustomSessionExtensions;
+using Core_MVC.CustomFilters;
 
 namespace Core_MVC.Controllers
 {
@@ -11,6 +13,9 @@ namespace Core_MVC.Controllers
     /// HttpGet, to perform Write Operations (POST, PUT, and DELETE)
     /// we have to apply HttpPost attribute on such action methods
     /// </summary>
+    /// 
+    /// Applying the Action Filter at controller Level
+    //[LoggerFilter]
     public class DepartmentController : Controller
     {
         private readonly IServices<Department, int> deptServ;
@@ -52,6 +57,8 @@ namespace Core_MVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (dept.DeptName.StartsWith(' '))
+                    throw new Exception("DeptName cannot starts from blanckspace");
                 // check if Dept exist based on DeptNAme
                 if (!CheckIdDepartmentNameExist(dept.DeptName))
                 {
@@ -80,8 +87,8 @@ namespace Core_MVC.Controllers
         [HttpPost]
         public IActionResult Edit(int id , Department dept) 
         {
-            try
-            {
+            //try
+            //{
                 if (ModelState.IsValid)
                 {
                     if (dept.DeptName.StartsWith(' '))
@@ -91,20 +98,20 @@ namespace Core_MVC.Controllers
                 }
                 // Stay on same page showing error messages
                 return View(dept);
-            }
-            catch (Exception ex)
-            {
-                return View("Error", new ErrorViewModel() 
-                {
-                    //ControllerName = "Department",
-                    //ActionName = "Edit",
-                    //ErrorMEssage = ex.Message
+            //}
+            //catch (Exception ex)
+            //{
+            //    return View("Error", new ErrorViewModel() 
+            //    {
+            //        //ControllerName = "Department",
+            //        //ActionName = "Edit",
+            //        //ErrorMEssage = ex.Message
 
-                    ControllerName = RouteData.Values["controller"].ToString(),
-                    ActionName = RouteData.Values["action"].ToString(),
-                    ErrorMEssage = ex.Message
-                });
-            }
+            //        ControllerName = RouteData.Values["controller"].ToString(),
+            //        ActionName = RouteData.Values["action"].ToString(),
+            //        ErrorMEssage = ex.Message
+            //    });
+            //}
         }
 
         public IActionResult Delete(int id)
@@ -117,6 +124,12 @@ namespace Core_MVC.Controllers
         {
             // Set the id i.e. DeptNo in session object 
             this.HttpContext.Session.SetInt32("DeptNo", id);
+            // USing TempData
+            TempData["DeptNo"] = id;
+            // Get the DEpartment Object
+            var dept = deptServ.Get(id).Record;
+            // Save the the dept in Session State
+            HttpContext.Session.SetObject<Department>("Dept", dept);
             // REdirect to an Index Vew of an EMployeeController
             return RedirectToAction("Index", "Employee");
         }

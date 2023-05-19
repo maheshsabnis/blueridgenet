@@ -2,7 +2,7 @@
 using Core_MVC.Models;
 using Core_MVC.Services;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-
+using Core_MVC.CustomSessionExtensions;
 namespace Core_MVC.Controllers
 {
     /// <summary>
@@ -36,6 +36,13 @@ namespace Core_MVC.Controllers
 
             // REad DEptNO from the Session
             int DeptNo = Convert.ToInt32(HttpContext.Session.GetInt32("DeptNo"));
+
+            // Red data from TempData
+            int dno = Convert.ToInt32(TempData["DeptNo"]);
+
+
+            // REad the Dept from Session State
+            var dept = HttpContext.Session.GetObject<Department>("Dept");
             var records = empServ.Get().Records;
             if (DeptNo == 0)
             {
@@ -48,7 +55,9 @@ namespace Core_MVC.Controllers
                 employees = records.Where(e => e.DeptNo == DeptNo).ToList();    
             }
 
-
+            // Keep the Data in TemData, either store all keys or specific key
+            // Note: Pass the KeyName to the Keep() method
+            TempData.Keep();  
              
             // PAssing List of Depatments
             return View(employees);
@@ -59,6 +68,7 @@ namespace Core_MVC.Controllers
         /// <returns></returns>
         public IActionResult Create()
         {
+            var dno = Convert.ToInt32(TempData["DeptNo"]); 
             var emp = new Employee();   
             // PAss an EMpty Employee Object to View
             return View(emp);
@@ -86,6 +96,7 @@ namespace Core_MVC.Controllers
 
         public IActionResult Edit(int id)
         {
+            var dno = Convert.ToInt32(TempData["DeptNo"]);
             var response = empServ.Get(id);
             return View(response.Record);
         }

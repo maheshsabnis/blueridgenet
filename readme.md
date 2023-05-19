@@ -668,3 +668,27 @@
 			- Write Binary Data in Session
 		- TryGet()
 			- Try to read Binary Data from Session
+	- TO Store a CLR Object in Session State, create a custom Session Store Extension for ISession interace
+
+# Action Filters	
+	- They are the Software Objects executed based on their application
+		- FOr a Specific MEthod in MVC /  API Controller (Lower for Requset, Highest Priority for Response)
+		- For a Speific MVC / API Controller (Middle for Requset, Middle Priority for Response )
+		- For all Controllers in the APplcation (Highest Priority for Requset, Lower Priority for Response)	
+	- IActionFilter Interface
+		- ActionFilter Abstract BAse class
+		- Override FOllowing Methods
+			- OnActionExecuting, accepts parameter ActionExectingContext
+			- OnActionExecuted, accepts parameter ActionExecutedContext
+			- OnResultExecuting, accepts parameter ResultExecutingContext
+			- OnResultExecuted, accepts parameter ResultExecutedContext
+		- All these classes are finally derived from 'ActionContext' class and have access to  'RouteData' class
+
+		- AUthorization Filter, Check for Security
+		- REsource Filter, Check for the REsurce being targetted e.g. COntroller and its Action
+		- Action Filter, Custom Logic
+		- Exception Filter, The Standard Exception ot Custom Exception
+		- Result Filter, The Result To be returned by the action Method
+		
+
+	
