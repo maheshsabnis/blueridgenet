@@ -1,0 +1,27 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+@if(Model != null)
+{
+    <h3>Error Occured in @Model.ActionName action in the @Model.ControllerName controller</h3>
+    <h3>Error is @Model.ErrorMEssage</h3>
+
+    <a asp-asp-controller="@Model.ControllerName" asp-action="@Model.ActionName">Go Back</a>
+}
+else
+{
+    @*Read data from ViewData*@
+    <h3>Error Occured in @ViewData["action"] action in the @ViewData["controller"] controller</h3>
+    <h3>Error is @ViewData["message"]</h3>
+
+    <a asp-asp-controller="@ViewData["controller"]" asp-action="@ViewData["action"]">Go Back</a>
+
+}
+
+
+

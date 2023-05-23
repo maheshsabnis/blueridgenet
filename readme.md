@@ -702,3 +702,24 @@
 - FromRoute
 	- Data received from ROute Expressions
 
+# ASP.NET Core Identity
+- Microsoft.AspNetCore.Identity
+	- A Security FRamework
+- Microsoft.AspNetCore.Identity.EntityFrameworkCore
+- REady-to-Use Security Classes
+	- UserManager<IdentityUser>
+		- USed to Create and Manager Users
+		- IdentityUser
+			- Class USed to Store User's Information in Database
+	- RoleManager<IdentityRole>
+		- Used to Create and Manage Roles for the Application
+		- IdentityRole
+			- CLass used to store Role Information in Database 
+	- SignInManager<IdentityUser>
+		- Manages USer SignIn
+- AddIdentity() /  AddDefaultIdentity
+	- Service to be added in DI Container to configure App for ASP.NET Core Security
+	- This method will Register UserManager, SignINManager, and RoleManger classed in DI COntainer
+- AddAuthentication() and AddAuthorization() Service Methods to Perform Credentials and Role Management in DI Container
+- UseAuthentication() and UseAuthorization() Middlewares
+	- USed for Verifying User's Credentials and Roles by Calling Database

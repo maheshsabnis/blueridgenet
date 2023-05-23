@@ -2,8 +2,6 @@ using Core_MVC.CustomFilters;
 using Core_MVC.Models;
 using Core_MVC.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using Core_MVC.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +15,6 @@ builder.Services.AddDbContext<BlueCompanyContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConnection"));
 });
-
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<Core_MVCContext>();
 // INitialize Session and Caching
 builder.Services.AddSession();
 
