@@ -54,6 +54,8 @@ namespace API_App.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (dept.Capacity < 0)
+                    throw new Exception("Capaity can not be -ve");
                 var response = await deptServ.CreateAsync(dept);
                 return Ok(response);
             }

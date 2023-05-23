@@ -691,4 +691,14 @@
 		- Result Filter, The Result To be returned by the action Method
 		
 
-	
+# Parameter Binder aka Model Binder
+- Mechansim of Mapping / Binding Received data from Body, QueryString, URL, Headers, Form to the CLR Object
+- FromBody
+	- Data Received from Http Request MEssage Body
+- FromForm
+	- Data received from Form Post request	
+- FormQuery
+	- Data Received from QueryString
+- FromRoute
+	- Data received from ROute Expressions
+

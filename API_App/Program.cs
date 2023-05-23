@@ -1,3 +1,4 @@
+using API_App.CustomMIddleware;
 using API_App.MOdels;
 using API_App.Services;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+
+// Register the Custom Middleware
+app.GlobalErrorHandler();
 
 // Process the API Controller by Mapping it to the
 // ROute Expression in HTTP REquest 
