@@ -717,7 +717,7 @@
 			- CLass used to store Role Information in Database 
 	- SignInManager<IdentityUser>
 		- Manages USer SignIn
-- AddIdentity() /  AddDefaultIdentity
+- AddIdentity()  
 	- Service to be added in DI Container to configure App for ASP.NET Core Security
 	- This method will Register UserManager, SignINManager, and RoleManger classed in DI COntainer
 - AddAuthentication() and AddAuthorization() Service Methods to Perform Credentials and Role Management in DI Container

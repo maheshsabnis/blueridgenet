@@ -1,0 +1,11 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityRole
+
+
+<h2>Create NEw Role</h2>
+
+<form asp-action="Create">
+    ENter Role NAme:
+    <input asp-for="Name" class="form-control"/>
+    <input type="submit" class="btn btn-sucecss" value="Save"/>
+</form>
+<a asp-action="Index">Back to List</a>

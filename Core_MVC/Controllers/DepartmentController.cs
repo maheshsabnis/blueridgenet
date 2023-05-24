@@ -4,6 +4,7 @@ using Core_MVC.Services;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Core_MVC.CustomSessionExtensions;
 using Core_MVC.CustomFilters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Core_MVC.Controllers
 {
@@ -16,6 +17,7 @@ namespace Core_MVC.Controllers
     /// 
     /// Applying the Action Filter at controller Level
     //[LoggerFilter]
+    //[Authorize]
     public class DepartmentController : Controller
     {
         private readonly IServices<Department, int> deptServ;
@@ -35,6 +37,9 @@ namespace Core_MVC.Controllers
         /// Action Method that is supposed to show LIst of Departments
         /// </summary>
         /// <returns></returns>
+        /// 
+        //   [Authorize(Roles = "Manager, Clerk, Operator")]
+        [Authorize(Policy = "ReadPolicy")]
         public IActionResult Index()
         {
             var result = deptServ.Get();
@@ -45,6 +50,9 @@ namespace Core_MVC.Controllers
         ///HttpGet
         /// </summary>
         /// <returns></returns>
+        /// 
+        //    [Authorize(Roles = "Manager, Clerk")]
+        [Authorize(Policy = "CreatePolicy")]
         public IActionResult Create()
         {
             var dept = new Department();   
@@ -77,7 +85,8 @@ namespace Core_MVC.Controllers
            
         }
 
-
+        //   [Authorize(Roles = "Manager")]
+        [Authorize(Policy = "EditDeletePolicy")]
         public IActionResult Edit(int id)
         {
             var response = deptServ.Get(id);
@@ -113,7 +122,8 @@ namespace Core_MVC.Controllers
             //    });
             //}
         }
-
+        //  [Authorize(Roles = "Manager")]
+        [Authorize(Policy = "EditDeletePolicy")]
         public IActionResult Delete(int id)
         {
             var response = deptServ.Delete(id);

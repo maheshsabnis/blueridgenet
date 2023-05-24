@@ -1,0 +1,29 @@
+﻿@model UserRoles
+
+<h3>Assign Role to User</h3>
+
+<form asp-action="AssignRoleToUser">
+    <table class="table table-bordered table-striped table-dark">
+        <thead>
+            <tr>
+                <th>
+                    Roles
+                </th>
+                <th>
+                    Users
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <select asp-items="@Model.Roles" asp-for="RoleName"></select>
+                </td>
+                <td>
+                    <select asp-items="@Model.Users" asp-for="UserEmail"></select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <input type="submit" value="Submit" class="btn btn-success"/>
+</form>
