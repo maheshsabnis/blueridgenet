@@ -45,7 +45,7 @@ namespace API_App.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            var response = await deptServ.GetAsync();
+            var response = await deptServ.GetAsync(id);
             return Ok(response);
         }
 
@@ -63,7 +63,7 @@ namespace API_App.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Department dept)
+        public async Task<IActionResult> Put(int id,Department dept)
         {
             if (ModelState.IsValid)
             {

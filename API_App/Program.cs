@@ -10,10 +10,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BlueCompanyContext>(options => 
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("AppConn"));
-});
+}); 
 
 builder.Services.AddScoped<IService<Department,int>,DepartmentService>();
 builder.Services.AddScoped<IService<Employee, int>, EmployeeService>();
+// COnfigure Cross-Origin-Resource-SHaring (CORS) policy
+// SO that on receiving the call from different Domain (Origin)
+// Headers, or Method (HTTP Methods ) the API can provide Data Response 
+builder.Services.AddCors(options => 
+{
+    options.AddPolicy("CORS", policy =>
+    {
+        // Allow all browser clients with all headers and all HTTP methods
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); 
+       
+    });
+});
+
+builder.Services.AddControllersWithViews();
 // THis is for API Controllers
 builder.Services.AddControllers().AddJsonOptions(options => 
 {
@@ -38,6 +52,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// Apply CORS
+
+app.UseCors("CORS");
+
 app.UseAuthorization();
 
 
@@ -47,5 +65,8 @@ app.GlobalErrorHandler();
 // Process the API Controller by Mapping it to the
 // ROute Expression in HTTP REquest 
 app.MapControllers();
-
+// ROute
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=SPA}/{action=Index}/{id?}");
 app.Run();

@@ -83,6 +83,7 @@ namespace Core_MVC.Services
             dept.Capacity = entity.Capacity;
             dept.Location = entity.Location;
             ctx.SaveChanges();
+            response.Record = dept;
             return response;
         }
     }
